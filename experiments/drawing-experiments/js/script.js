@@ -25,10 +25,22 @@ function setup() {
     background(255, 192, 203);
 
     ellipseMode(CORNER);
+
+    noStroke();
+
+    fill(250, 82, 150, 100);
     ellipse(250, 250, 100, 100);
+
+    fill(250, 82, 160, 100);
     ellipse(250, 250, 80, 80);
+
+    fill(250, 82, 170, 100);
     ellipse(250, 250, 60, 60);
+
+    fill(250, 82, 180, 100);
     ellipse(250, 250, 40, 40);
+
+    fill(250, 82, 190, 100);
     ellipse(250, 250, 20, 20);
 
 }
