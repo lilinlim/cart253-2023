@@ -20,7 +20,7 @@ function preload() {
  * Description of setup
 */
 function setup() {
-    createCanvas();
+
 }
 
 
