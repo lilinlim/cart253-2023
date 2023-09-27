@@ -21,6 +21,7 @@ let user = {
 
 let numStatic = 5000;
 
+
 function setup() {
     createCanvas(windowWidth, windowHeight);
 
