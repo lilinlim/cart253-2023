@@ -18,6 +18,7 @@ let state = 'title';
 
 let timer = 3;
 
+//images
 let chickIm;
 let hatchIm;
 let eggIm;
@@ -183,6 +184,9 @@ function timerShow(){
 
 function eggStates() {
 
+    //changes images of egg depending on state.. wasnt able to figure out how to
+    //show before state change.. for next time
+
     if(state === 'title'){
         title();
     }
@@ -203,5 +207,4 @@ function eggStates() {
         image(eggIm, egg.x, egg.y, 100, 100);
     }
 
-    //simulation();
 }
