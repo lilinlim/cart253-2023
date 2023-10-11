@@ -1,32 +1,46 @@
-/**
- * Title of Project
- * Author Name
- * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
- */
 
-"use strict";
 
-/**
- * Description of preload
-*/
-function preload() {
-
+function preload(){ 
+    fontRegular = loadFont('assets/fonts/regular.ttf');
 }
 
-
-/**
- * Description of setup
-*/
 function setup() {
-
+    createCanvas(400, 400);
 }
 
-
-/**
- * Description of draw()
-*/
 function draw() {
+    background(220);
+  
+  if(state === 'title'){
+        title();
+  }
+  else if (state === 'simulation'){
+        simulation();
+  }
+  else if (state === 'end'){
+        ending();
+  }
+}
+
+function title(){
+    push();
+    textSize(64);
+    fill(200, 100, 100);
+    textAlign(CENTER, CENTER);
+    text('click to start', width/2, height/1.25);
+    pop();
+}
+
+function mousePressed(){
+    if(state === 'title'){
+        state = 'simulation';
+    }
+}
+
+function ending(){
+  
+}
+
+function simulation(){
 
 }
