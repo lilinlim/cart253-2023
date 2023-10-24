@@ -11,8 +11,16 @@ let rice = {
   
 let state = 'title';
 
+var clicks = 0;
+
+let timer = 3;
+
+//images
+
 function preload(){ 
     fontRegular = loadFont('assets/fonts/regular.ttf');
+
+    //images
 }
 
 function setup() {
@@ -20,7 +28,7 @@ function setup() {
 
     textFont(fontRegular);
 
-    //noCursor();
+    //noCursor(); //custom cursor?
 }
 
 function draw() {
@@ -40,6 +48,9 @@ function draw() {
       }
       else if(state === 'credits'){
         credits();
+      }
+      else if(state === 'timeDone'){
+        timeDone();
       }
 }
     
@@ -70,6 +81,17 @@ function simulation(){
     //if(rice.size === 170){rice.fill(255, 204, 230);}
       
 }
+
+function mouseLoc(){
+  if(state === 'simulation'){
+    let d = dist(mouseX, mouseY, rice.x, rice.y);
+    if (d < rice.size / 2){
+      return true;
+    } else {
+      return false;
+    }
+  }
+}
     
 function mousePressed(){
       
@@ -80,10 +102,17 @@ function mousePressed(){
         state = 'simulation'
     }
     else if(state === 'simulation'){
-      rice.size = rice.size - 10;
-      if(rice.size === 150){
-        state = 'end';
-      }
+      //rice.size = rice.size - 10;
+      //if(rice.size === 150){state = 'end';}
+
+      rice.size = rice.size - 50;
+    clicks ++;
+    if(clicks == 3){
+      state = 'end';
+    }
+    //if(clicks == 2){
+      
+   // }
     }
     else if(state === 'end'){
         state = 'credits';
@@ -107,4 +136,30 @@ function credits(){
     textAlign(CENTER, CENTER);
     text('credits', width/2, height/1.25);
     pop();
+}
+
+function timerShow(){
+  push();
+  textSize(50);
+  fill(150, 150, 255);
+  textAlign(CENTER, CENTER);
+  text(timer, width/2, height/4);
+  pop();
+
+  if (frameCount % 60 == 0 && timer > 0) { 
+      timer --;
+  }
+
+  if (timer == 0) {
+      state = 'timeDone';
+  }
+}
+
+function timeDone(){
+  push();
+  textSize(64);
+  fill(150, 150, 255);
+  textAlign(CENTER, CENTER);
+  text('too late', width/2, height/2);
+  pop();
 }
