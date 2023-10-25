@@ -25,62 +25,119 @@ function preload(){
   titleScreen = loadImage('assets/images/titleScreen.jpg');
   gameOver = loadImage('assets/images/gameOver.jpg');
   winScreen = loadImage('assets/images/winScreen.jpg');
+  hungry = loadImage('assets/images/hungry.jpg');
+  menu = loadImage('assets/images/menu.jpg');
+  huge = loadImage('assets/images/huge.jpg');
+
+  riceFull = loadImage('assets/images/riceFull.png');
+  riceMid = loadImage('assets/images/riceMid.png');
+  riceSmall = loadImage('assets/images/riceSmall.png');
+  riceEmpty = loadImage('assets/images/riceEmpty.png');
+
+  eatOpen = loadImage('assets/images/eatOpen.png');
+  eatClosed = loadImage('assets/images/eatClosed.png');
+
   //= loadImage('assets/images/.jpg');
 }
 
 function setup() {
-    createCanvas(800, 600);
+  createCanvas(800, 600);
 
-    textFont(fontRegular);
+  textFont(fontRegular);
 
-    //noCursor(); //custom cursor?
+  //noCursor(); //custom cursor?
 }
 
 function draw() {
-  background(220);
+  background(255, 212, 212);
   
   //state machine
   if(state === 'title'){
     title()
   }
-  else if(state === 'explanation'){
-    explanation();
+  else if(state === 'hunger'){
+    hunger();
+  }
+  else if(state === 'ordering'){
+    ordering();
+  }
+  else if(state === 'food'){
+    food();
+  }
+  else if(state === 'food2'){
+    food2();
   }
   else if(state === 'simulation'){
     simulation();
+    timerShow();
   }
   else if(state === 'end'){
-    ending();
-  }
-  else if(state === 'credits'){
-    credits();
+    end();
   }
   else if(state === 'timeDone'){
     timeDone();
   }
 }
     
+//title screen
 function title(){
-
   imageMode(CENTER);
   image(titleScreen, 400, 300);
 
   push();
   textSize(60);
-  fill(0, 0, 0);
+  fill(0);
   textAlign(CENTER, CENTER);
-  text('click to start', width/2, 470);
+  text('click to start', width/2, height/1.25);
   pop();
-
 }
     
-function explanation(){
-    push();
-    textSize(64);
-    fill(200, 100, 100);
-    textAlign(CENTER, CENTER);
-    text('blablabla', width/2, height/1.25);
-    pop();
+function hunger(){
+  imageMode(CENTER);
+  image(hungry, 400, 300);
+
+  push();
+  textSize(64);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("i'm hungry...", width/2, height/1.25);
+  pop();
+}
+
+function ordering(){
+  imageMode(CENTER);
+  image(menu, 400, 300);
+
+  push();
+  textSize(64);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text('hmm.. what shall i order..', width/2, height/1.25);
+  pop();
+}
+
+function food(){
+  imageMode(CENTER);
+  image(huge, 400, 300);
+
+  push();
+  textSize(64);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("wow! so big!", width/2, height/1.25);
+  pop();
+}
+
+function food2(){
+  imageMode(CENTER);
+  image(huge, 400, 300);
+
+  push();
+  textSize(64);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text("my lunch break is ending.. i need to finish this quickly", width/2, height/1.25);
+  pop();
 }
     
 function simulation(){
@@ -106,51 +163,51 @@ function mouseLoc(){
     
 function mousePressed(){
       
-    if(state === 'title'){
-        state = 'explanation';
-    }
-    else if(state === 'explanation'){
-        state = 'simulation'
-    }
-    else if(state === 'simulation' && mouseLoc()){
-      rice.size = rice.size - 50;
+  if(state === 'title'){
+    state = 'hunger';
+  }
+  else if(state === 'hunger'){
+    state = 'ordering'
+  }
+  else if(state === 'ordering'){
+    state = 'food';
+  }
+  else if(state === 'food'){
+    state = 'food2';
+  }
+  else if(state === 'food2'){
+    state = 'simulation'
+  }
+  else if(state === 'simulation' && mouseLoc()){
+    rice.size = rice.size - 50;
 
     clicks ++;
-    if(clicks == 3){
-      state = 'end';
-    }
+      if(clicks == 3){
+        state = 'end';
+      }
     //if(clicks == 2){
       
    // }
     }
-    else if(state === 'end'){
-        state = 'credits';
-    }
       
 }
     
-function ending(){
-    push();
-    textSize(64);
-    fill(200, 100, 100);
-    textAlign(CENTER, CENTER);
-    text('end??', width/2, height/1.25);
-    pop();
-}
-    
-function credits(){
-    push();
-    textSize(64);
-    fill(200, 100, 100);
-    textAlign(CENTER, CENTER);
-    text('credits', width/2, height/1.25);
-    pop();
+function end(){
+  imageMode(CENTER);
+  image(winScreen, 400, 300);
+
+  push();
+  textSize(64);
+  fill(0);
+  textAlign(CENTER, CENTER);
+  text('yay i did it on time!', width/2, 550);
+  pop();
 }
 
 function timerShow(){
   push();
   textSize(50);
-  fill(150, 150, 255);
+  fill(0);
   textAlign(CENTER, CENTER);
   text(timer, width/2, height/4);
   pop();
@@ -164,11 +221,15 @@ function timerShow(){
   }
 }
 
+//game over
 function timeDone(){
+  imageMode(CENTER);
+  image(gameOver, 400, 300);
+
   push();
   textSize(64);
-  fill(150, 150, 255);
+  fill(0);
   textAlign(CENTER, CENTER);
-  text('too late', width/2, height/2);
+  text('game over..', width/2, height/4);
   pop();
 }
