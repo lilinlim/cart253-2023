@@ -16,11 +16,16 @@ var clicks = 0;
 let timer = 3;
 
 //images
+let titleScreen;
 
 function preload(){ 
     fontRegular = loadFont('assets/fonts/regular.ttf');
 
     //images
+    titleScreen = loadImage('assets/images/titleScreen.jpg');
+    gameOver = loadImage('assets/images/gameOver.jpg');
+    winScreen = loadImage('assets/images/winScreen.jpg');
+    //= loadImage('assets/images/.jpg');
 }
 
 function setup() {
@@ -61,6 +66,9 @@ function title(){
     textAlign(CENTER, CENTER);
     text('title', width/2, height/2);
     pop();
+
+    imageMode(CENTER);
+    image(titleScreen, 400, 300);
  }
     
 function explanation(){
