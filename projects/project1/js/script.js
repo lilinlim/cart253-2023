@@ -1,11 +1,11 @@
 let rice = {
-    x: 200,
-    y: 200,
-    size: 200,
-    fill: {
-      r: 255,
-      g: 223,
-      b: 216
+  x: 200,
+  y: 200,
+  size: 200,
+  fill: {
+    r: 255,
+    g: 223,
+    b: 216
   }
 }
   
@@ -19,13 +19,13 @@ let timer = 3;
 let titleScreen;
 
 function preload(){ 
-    fontRegular = loadFont('assets/fonts/regular.ttf');
+  fontRegular = loadFont('assets/fonts/regular.ttf');
 
-    //images
-    titleScreen = loadImage('assets/images/titleScreen.jpg');
-    gameOver = loadImage('assets/images/gameOver.jpg');
-    winScreen = loadImage('assets/images/winScreen.jpg');
-    //= loadImage('assets/images/.jpg');
+  //images
+  titleScreen = loadImage('assets/images/titleScreen.jpg');
+  gameOver = loadImage('assets/images/gameOver.jpg');
+  winScreen = loadImage('assets/images/winScreen.jpg');
+  //= loadImage('assets/images/.jpg');
 }
 
 function setup() {
@@ -37,39 +37,42 @@ function setup() {
 }
 
 function draw() {
-    background(220);
+  background(220);
   
-    if(state === 'title'){
-        title()
-      }
-      else if(state === 'explanation'){
-        explanation();
-      }
-      else if(state === 'simulation'){
-        simulation();
-      }
-      else if(state === 'end'){
-        ending();
-      }
-      else if(state === 'credits'){
-        credits();
-      }
-      else if(state === 'timeDone'){
-        timeDone();
-      }
+  //state machine
+  if(state === 'title'){
+    title()
+  }
+  else if(state === 'explanation'){
+    explanation();
+  }
+  else if(state === 'simulation'){
+    simulation();
+  }
+  else if(state === 'end'){
+    ending();
+  }
+  else if(state === 'credits'){
+    credits();
+  }
+  else if(state === 'timeDone'){
+    timeDone();
+  }
 }
     
 function title(){
-    push();
-    textSize(64);
-    fill(200, 100, 100);
-    textAlign(CENTER, CENTER);
-    text('title', width/2, height/2);
-    pop();
 
-    imageMode(CENTER);
-    image(titleScreen, 400, 300);
- }
+  imageMode(CENTER);
+  image(titleScreen, 400, 300);
+
+  push();
+  textSize(60);
+  fill(0, 0, 0);
+  textAlign(CENTER, CENTER);
+  text('click to start', width/2, 470);
+  pop();
+
+}
     
 function explanation(){
     push();
@@ -109,11 +112,9 @@ function mousePressed(){
     else if(state === 'explanation'){
         state = 'simulation'
     }
-    else if(state === 'simulation'){
-      //rice.size = rice.size - 10;
-      //if(rice.size === 150){state = 'end';}
-
+    else if(state === 'simulation' && mouseLoc()){
       rice.size = rice.size - 50;
+
     clicks ++;
     if(clicks == 3){
       state = 'end';
