@@ -1,3 +1,12 @@
+/*****************
+  project 1
+  elle lilin lim
+
+  you're a cat and must eat your rice lunch before time runs out!
+  make sure to click on the rice to consumme your delicious meal.
+*****************/
+
+
 let rice = {
   x: 200,
   y: 300,

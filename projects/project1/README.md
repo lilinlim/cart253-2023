@@ -1,3 +1,8 @@
-# Template p5 project
+# project 1 - a cat's lunch
+## elle lilin lim
 
-This is the README file for the entire project. For more official projects you should write information here about the nature of the project, your name, any special explanations of how the project works, etc.
+it starts off with some diaologue setting the context, you're a cat having a rice lunch.
+the user must interact with the rice bowl to be able to eat it before it's lunch break ends!
+
+code for mouse distance from pippin:
+https://editor.p5js.org/pippinbarr/sketches/IPfsT9qw4
