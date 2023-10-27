@@ -8,21 +8,20 @@ let rice = {
     b: 216
 }
 }
-
-let bowl = {
-  x: 200,
-  y: 300,
-  size: 300,
-}
   
+//starting state
 let state = 'title';
 
+//click counter starts at 0
 var clicks = 0;
 
-let timer = 20;
+//timer
+let timer = 15;
 
+//for cat eating sprites
 let catto, eatOpen, eatClosed;
 
+//dialogue backgrounds
 let titleScreen;
 let gameOver;
 let winScreen;
@@ -30,6 +29,8 @@ let hungry;
 let menu;
 let huge;
 
+//rice images
+let bowl;
 let riceFull;
 let riceMid;
 let riceSmall;
@@ -66,6 +67,7 @@ function setup() {
   stroke(255);
   strokeWeight(3);
 
+  //starting images for cat&rice
   catto = eatOpen;
   bowl = riceFull;
 }
@@ -73,6 +75,7 @@ function setup() {
 function draw() {
   background(255, 212, 212);
 
+  //making sure the images will show
   imageMode(CENTER);
   image(catto, 400, 300);
   image(bowl, 300, 300);
@@ -177,12 +180,7 @@ function simulation(){
   if(clicks<5){
     bowl = riceFull;
 
-    //instructions
-    push();
-    textSize(50);
-    textAlign(CENTER, CENTER);
-    text("click on the rice to eat", width/2, height/1.25);
-    pop();
+    instructions();
   }
   else if (clicks>5 && clicks<8){
     bowl = riceMid;
@@ -194,6 +192,15 @@ function simulation(){
     bowl = riceEmpty;
   }
       
+}
+
+//instructions
+function instructions(){
+  push();
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("click on the rice to eat", width/2, height/1.25);
+    pop();
 }
 
 //from pippin's drag, drop delete code
@@ -227,17 +234,22 @@ function mousePressed(){
     state = 'simulation'
   }
   else if(state === 'simulation' && mouseLoc()){
-    //click counter when rice is clicked
-    clicks ++;
-    //end condition
-      if(clicks == 12){
-        state = 'end';
-      }
+    clicking();
   }
 
   //cat sprite
   catto = eatClosed;
   
+}
+
+//click counter
+function clicking(){
+  //+1 click when rice is clicked
+  clicks ++;
+  //end condition
+    if(clicks == 12){
+      state = 'end';
+    }
 }
 
 function mouseReleased(){
