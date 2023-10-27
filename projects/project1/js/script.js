@@ -1,13 +1,15 @@
 let rice = {
   x: 200,
-  y: 200,
-  size: 200,
+  y: 300,
+  size: 300,
   fill: {
     r: 255,
     g: 223,
     b: 216
-  }
 }
+}
+
+let bowl;
   
 let state = 'title';
 
@@ -17,6 +19,16 @@ let timer = 3;
 
 //images
 let titleScreen;
+let gameOver;
+let winScreen;
+let hungry;
+let menu;
+let huge;
+
+let riceFull;
+let riceMid;
+let riceSmall;
+let riceEmpty;
 
 function preload(){ 
   fontRegular = loadFont('assets/fonts/regular.ttf');
@@ -44,6 +56,11 @@ function setup() {
   createCanvas(800, 600);
 
   textFont(fontRegular);
+  fill(0);
+  stroke(255);
+  strokeWeight(3);
+
+  //rice = riceFull;
 
   //noCursor(); //custom cursor?
 }
@@ -69,7 +86,7 @@ function draw() {
   }
   else if(state === 'simulation'){
     simulation();
-    timerShow();
+    //timerShow();
   }
   else if(state === 'end'){
     end();
@@ -81,6 +98,7 @@ function draw() {
     
 //title screen
 function title(){
+  
   imageMode(CENTER);
   image(titleScreen, 400, 300);
 
@@ -90,6 +108,7 @@ function title(){
   textAlign(CENTER, CENTER);
   text('click to start', width/2, height/1.25);
   pop();
+
 }
     
 function hunger(){
@@ -97,6 +116,10 @@ function hunger(){
   image(hungry, 400, 300);
 
   push();
+  rectMode(CENTER);
+  fill(255);
+  rect(400, 500, 500, 150);
+
   textSize(64);
   fill(0);
   textAlign(CENTER, CENTER);
@@ -110,7 +133,6 @@ function ordering(){
 
   push();
   textSize(64);
-  fill(0);
   textAlign(CENTER, CENTER);
   text('hmm.. what shall i order..', width/2, height/1.25);
   pop();
@@ -122,9 +144,8 @@ function food(){
 
   push();
   textSize(64);
-  fill(0);
   textAlign(CENTER, CENTER);
-  text("wow! so big!", width/2, height/1.25);
+  text("wow! so big!", width/2, height/4);
   pop();
 }
 
@@ -133,20 +154,38 @@ function food2(){
   image(huge, 400, 300);
 
   push();
-  textSize(64);
-  fill(0);
+  textSize(50);
   textAlign(CENTER, CENTER);
-  text("my lunch break is ending.. i need to finish this quickly", width/2, height/1.25);
+  text("i need to finish this quickly", width/2, height/4);
   pop();
 }
     
 function simulation(){
-      
-    noStroke();
+
+  noStroke();
+  ellipse(rice.x, rice.y, rice.size);
+  
+  if(clicks<5){
     fill(rice.fill.r, rice.fill.g, rice.fill.b);
-    ellipse(rice.x, rice.y, rice.size);
-      
-    //if(rice.size === 170){rice.fill(255, 204, 230);}
+  }
+  else if (clicks>5 && clicks<8){
+    rice.fill.r = 0;
+    rice.fill.g =0;
+    rice.fill.b = 0;
+    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+  }
+  else if (clicks>8 && clicks<11){
+    rice.fill.r = 255;
+    rice.fill.g =255;
+    rice.fill.b = 255;
+    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+  }
+  else if (clicks > 11){
+    rice.fill.r = 255;
+    rice.fill.g =25;
+    rice.fill.b = 25;
+    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+  }
       
 }
 
@@ -179,15 +218,11 @@ function mousePressed(){
     state = 'simulation'
   }
   else if(state === 'simulation' && mouseLoc()){
-    rice.size = rice.size - 50;
-
     clicks ++;
-      if(clicks == 3){
+    rice.size = rice.size - 10;
+      if(clicks == 12){
         state = 'end';
       }
-    //if(clicks == 2){
-      
-   // }
     }
       
 }
@@ -198,7 +233,6 @@ function end(){
 
   push();
   textSize(64);
-  fill(0);
   textAlign(CENTER, CENTER);
   text('yay i did it on time!', width/2, 550);
   pop();
@@ -207,7 +241,6 @@ function end(){
 function timerShow(){
   push();
   textSize(50);
-  fill(0);
   textAlign(CENTER, CENTER);
   text(timer, width/2, height/4);
   pop();
@@ -228,7 +261,6 @@ function timeDone(){
 
   push();
   textSize(64);
-  fill(0);
   textAlign(CENTER, CENTER);
   text('game over..', width/2, height/4);
   pop();
