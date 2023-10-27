@@ -9,15 +9,20 @@ let rice = {
 }
 }
 
-let bowl;
+let bowl = {
+  x: 200,
+  y: 300,
+  size: 300,
+}
   
 let state = 'title';
 
 var clicks = 0;
 
-let timer = 3;
+let timer = 20;
 
-//images
+let catto, eatOpen, eatClosed;
+
 let titleScreen;
 let gameOver;
 let winScreen;
@@ -55,19 +60,23 @@ function preload(){
 function setup() {
   createCanvas(800, 600);
 
+  //font
   textFont(fontRegular);
   fill(0);
   stroke(255);
   strokeWeight(3);
 
-  //rice = riceFull;
-
-  //noCursor(); //custom cursor?
+  catto = eatOpen;
+  bowl = riceFull;
 }
 
 function draw() {
   background(255, 212, 212);
-  
+
+  imageMode(CENTER);
+  image(catto, 400, 300);
+  image(bowl, 300, 300);
+
   //state machine
   if(state === 'title'){
     title()
@@ -86,7 +95,7 @@ function draw() {
   }
   else if(state === 'simulation'){
     simulation();
-    //timerShow();
+    timerShow();
   }
   else if(state === 'end'){
     end();
@@ -111,15 +120,12 @@ function title(){
 
 }
     
+//dialogue 1
 function hunger(){
   imageMode(CENTER);
   image(hungry, 400, 300);
 
   push();
-  rectMode(CENTER);
-  fill(255);
-  rect(400, 500, 500, 150);
-
   textSize(64);
   fill(0);
   textAlign(CENTER, CENTER);
@@ -127,6 +133,7 @@ function hunger(){
   pop();
 }
 
+//dialogue 2
 function ordering(){
   imageMode(CENTER);
   image(menu, 400, 300);
@@ -138,6 +145,7 @@ function ordering(){
   pop();
 }
 
+//dialogue 3
 function food(){
   imageMode(CENTER);
   image(huge, 400, 300);
@@ -149,6 +157,7 @@ function food(){
   pop();
 }
 
+//dialogue 4
 function food2(){
   imageMode(CENTER);
   image(huge, 400, 300);
@@ -160,35 +169,34 @@ function food2(){
   pop();
 }
     
+//game part
 function simulation(){
-
-  noStroke();
-  ellipse(rice.x, rice.y, rice.size);
+  imageMode(CENTER);
   
+  //rice image depending on number of clicks
   if(clicks<5){
-    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+    bowl = riceFull;
+
+    //instructions
+    push();
+    textSize(50);
+    textAlign(CENTER, CENTER);
+    text("click on the rice to eat", width/2, height/1.25);
+    pop();
   }
   else if (clicks>5 && clicks<8){
-    rice.fill.r = 0;
-    rice.fill.g =0;
-    rice.fill.b = 0;
-    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+    bowl = riceMid;
   }
   else if (clicks>8 && clicks<11){
-    rice.fill.r = 255;
-    rice.fill.g =255;
-    rice.fill.b = 255;
-    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+    bowl = riceSmall;
   }
   else if (clicks > 11){
-    rice.fill.r = 255;
-    rice.fill.g =25;
-    rice.fill.b = 25;
-    fill(rice.fill.r, rice.fill.g, rice.fill.b);
+    bowl = riceEmpty;
   }
       
 }
 
+//from pippin's drag, drop delete code
 function mouseLoc(){
   if(state === 'simulation'){
     let d = dist(mouseX, mouseY, rice.x, rice.y);
@@ -202,6 +210,7 @@ function mouseLoc(){
     
 function mousePressed(){
       
+  //states
   if(state === 'title'){
     state = 'hunger';
   }
@@ -218,37 +227,51 @@ function mousePressed(){
     state = 'simulation'
   }
   else if(state === 'simulation' && mouseLoc()){
+    //click counter when rice is clicked
     clicks ++;
-    rice.size = rice.size - 10;
+    //end condition
       if(clicks == 12){
         state = 'end';
       }
-    }
-      
+  }
+
+  //cat sprite
+  catto = eatClosed;
+  
+}
+
+function mouseReleased(){
+  //cat sprite
+  catto = eatOpen;
 }
     
+//ending
 function end(){
   imageMode(CENTER);
   image(winScreen, 400, 300);
 
   push();
   textSize(64);
+  fill(0)
   textAlign(CENTER, CENTER);
   text('yay i did it on time!', width/2, 550);
   pop();
 }
 
+//timer
 function timerShow(){
   push();
   textSize(50);
   textAlign(CENTER, CENTER);
-  text(timer, width/2, height/4);
+  text(timer, width/2, height/8);
   pop();
 
+  //reducing timer
   if (frameCount % 60 == 0 && timer > 0) { 
       timer --;
   }
 
+  //timer finish --> game over
   if (timer == 0) {
       state = 'timeDone';
   }
