@@ -1,32 +1,32 @@
-/**
- * Title of Project
- * Author Name
- * 
- * This is a template. You must fill in the title, author, 
- * and this description to match your project!
- */
-
 "use strict";
 
-/**
- * Description of preload
-*/
-function preload() {
+let dialogue = [
+    'hi',
+    'this is a test',
+    'to see if it works',
+    'hopefully it does',
+];
 
-}
+let currentIndex = 0;
 
-
-/**
- * Description of setup
-*/
 function setup() {
-
+    createCanvas(600, 600);
+    textAlign(CENTER, CENTER);
+    textSize(32);
+    fill(255);
 }
 
 
-/**
- * Description of draw()
-*/
 function draw() {
+    background(0);
 
+    text(dialogue[currentIndex], width/2, height/2);
+}
+
+function mousePressed() {
+    currentIndex = currentIndex + 1;
+
+    if(currentIndex === dialogue.length){
+        currentIndex = dialogue.length - 1;
+    }
 }
