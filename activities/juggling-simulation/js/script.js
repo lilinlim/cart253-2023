@@ -5,7 +5,7 @@ let gravityForce = 0.0025;
 let paddle;
 
 let balls = [];
-let numBalls = 10;
+let numBalls = 1;
 
 function setup() {
 
@@ -40,3 +40,13 @@ function draw() {
         }
     }
 }
+
+//mousepress balls go up
+function mousePressed(){
+    let ball = new Ball(x, y);
+    balls.push(ball);
+}
+
+//end1 all balls out
+
+//end2 
