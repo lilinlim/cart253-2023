@@ -1,5 +1,18 @@
 "use strict";
 
+let food = {
+    x: 300,
+    y: 300,
+    size: 200,
+    fill: {
+        r: 48,
+        g: 60,
+        b: 110
+    }
+}
+
+var clicks = 0;
+
 //setting up starting state
 let state = 'title';
 
@@ -13,6 +26,7 @@ let dialogueAgain = [
     'test',
     'to see if 2 array',
     'works',
+    'click circle to change clr',
 ]
 
 let currentIndex = 0;
@@ -48,6 +62,9 @@ function draw() {
     else if(state === 'simulation'){
         simulation();
     }
+    else if(state === 'end'){
+        end();
+    }
 }
 
 function mousePressed() {
@@ -57,6 +74,9 @@ function mousePressed() {
     }
     else if(state === 'stateTest'){
         state = 'talkingAgain';
+    }
+    else if(state === 'simulation' && mouseInsideFood()){
+        clicking();
     }
 
     
@@ -114,5 +134,43 @@ function talkingAgain(){
 
 function simulation(){
     noStroke();
-    ellipse(300, 300, 100);
+    ellipse(food.x, food.y, food.size);
+
+    if(clicks < 5){
+        fill(food.fill.r, food.fill.g, food.fill.b);
+    }
+    else if(clicks > 10 && clicks < 15){
+        food.fill.r = 103;
+        food.fill.g = 144;
+        food.fill.b = 194;
+        fill(food.fill.r, food.fill.g, food.fill.b);
+    }
+    else if(clicks > 15){
+        food.fill.r = 161;
+        food.fill.g = 218;
+        food.fill.b = 230;
+        fill(food.fill.r, food.fill.g, food.fill.b);
+    }
+}
+
+function clicking(){
+    clicks++;
+    if(clicks == 16){
+        state = 'end';
+    }
+}
+
+function mouseInsideFood(){
+    if(state === 'simulation'){
+      let d = dist(mouseX, mouseY, food.x, food.y);
+      if (d < food.size / 2){
+        return true;
+      } else {
+        return false;
+      }
+    }
+  }
+
+function end(){
+    text('end for now', width/2, height/2);
 }
