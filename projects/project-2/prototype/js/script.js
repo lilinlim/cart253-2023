@@ -4,13 +4,20 @@
 let state = 'title';
 
 let dialogue = [
-    'hi',
-    'this is a test',
-    'to see if it works',
-    'hopefully it does',
+    'r arrow to continue',
+    'l arrow key to go back',
+    'test',
 ];
 
+let dialogueAgain = [
+    'test',
+    'to see if 2 array',
+    'works',
+]
+
 let currentIndex = 0;
+
+let secondIndex = 0;
 
 function setup() {
     createCanvas(600, 600);
@@ -35,6 +42,12 @@ function draw() {
     else if(state === 'stateTest'){
         stateTest();
     }
+    else if(state === 'talkingAgain'){
+        talkingAgain();
+    }
+    else if(state === 'simulation'){
+        simulation();
+    }
 }
 
 function mousePressed() {
@@ -42,8 +55,22 @@ function mousePressed() {
     if(state === 'title'){
         state = 'talking';
     }
+    else if(state === 'stateTest'){
+        state = 'talkingAgain';
+    }
 
-    else if(state === 'talking'){
+    
+}
+
+function keyPressed() {
+    if(keyCode === LEFT_ARROW && state === 'talking'){
+        currentIndex = currentIndex - 1;
+
+        if(currentIndex === -1){
+            currentIndex = 0;
+        }
+
+    } else if (keyCode === RIGHT_ARROW && state === 'talking'){
         currentIndex = currentIndex + 1;
 
         if(currentIndex === dialogue.length){
@@ -51,20 +78,41 @@ function mousePressed() {
             state = 'stateTest';
         }
     }
+
+    if(keyCode === LEFT_ARROW && state === 'talkingAgain'){
+        secondIndex = secondIndex - 1;
+
+        if(secondIndex === -1){
+            secondIndex = 0;
+        }
+
+    } else if (keyCode === RIGHT_ARROW && state === 'talkingAgain'){
+        secondIndex = secondIndex + 1;
+
+        if(secondIndex === dialogueAgain.length){
+            secondIndex = dialogueAgain.length - 1;
+            state = 'simulation';
+        }
+    }
 }
 
 function title(){
-
     text('click to start', width/2, height/2);
-
 }
 
 function talking(){
-
     text(dialogue[currentIndex], width/2, height/2);
-
 }
 
 function stateTest(){
-    text('state test', width/2, height/2);
+    text('this is a click', width/2, height/2);
+}
+
+function talkingAgain(){
+    text(dialogueAgain[secondIndex], width/2, height/2);
+}
+
+function simulation(){
+    noStroke();
+    ellipse(300, 300, 100);
 }
