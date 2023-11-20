@@ -12,8 +12,20 @@ let user = {
     fill: 255
 }
 
+let images = [];
+let numImages = 6;
+let displayImage;
+
+function preload(){
+  for(let i = 0; i < numImages; i++) {
+    let loadedImage = loadedImage('assets/images/fish-${i}.png');
+    images.push(loadedImage);
+  }
+}
 function setup() {
   createCanvas(600, 600);
+
+  displayImage = random(images);
 
   // Create four fish, positioned randomly
 
@@ -48,6 +60,9 @@ function draw() {
   }
 
   player();
+
+  imageMode(CENTER);
+  image(displayImage, width / 2, height / 2);
 
 }
 
@@ -120,26 +135,19 @@ function eat(){
     //let d = dist(mouseX, mouseY, fish.x, fish.y);
     let d = dist(user.x, user.y, fish.x, fish.y);
     if(d < fish.size / 2 + user.size / 2){
+      preyCounter++;
+      text(preyCounter, width/2, height/2);
       school.splice(i, 1);
       break;
+    }
+    if(preyCounter == 2){
+      end1();
     }
 }
 
 }
 
-function preyEat(){
-  push();
-  textSize(50);
-  textAlign(CENTER, CENTER);
-  text(preyCounter, width/2, height/8);
-  pop()
-  if(d < fish.size / 2 + user.size / 2){
-    preyCounter++;
-  }
-  if(preyCounter == 4){
-    end1();
-  }
-}
+
 
 function end1(){
     push();
