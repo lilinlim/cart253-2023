@@ -9,6 +9,10 @@ let numBalls = 1;
 
 let state = 'simulation';
 
+let preyCounter = 0;
+
+let d = dist(paddle.x, paddle.y, ball.x, ball.y);
+
 function setup() {
 
     createCanvas(windowWidth, windowHeight);
@@ -49,9 +53,11 @@ function simulation(){
             ball.gravity(gravityForce);
             ball.move();
             ball.bounce(paddle);
-            ball.display();
+            ball.display(); 
         }
     }
+
+    
 }
 
 
@@ -66,6 +72,7 @@ function ballsGone(){
         state = 'end1';
     }
 }
+
 
 function end1(){
     push();

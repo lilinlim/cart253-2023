@@ -36,10 +36,6 @@ class Ball {
             this.x < paddle.x + paddle.width/2 &&
             this.y + this.size/2 > paddle.y - paddle.height/2 &&
             this.y - this.size/2 < paddle.y + paddle.height/2){
-
-            preyCounter++;
-            fill(255);
-            text(preyCounter, width/2, height/2);
             
             //bounce
             let dx = this.x - paddle.x;
