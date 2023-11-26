@@ -9,7 +9,7 @@ let numBalls = 1;
 
 let state = 'simulation';
 
-let preyCounter = 0;
+let ballCounter = 0;
 
 let d = dist(paddle.x, paddle.y, ball.x, ball.y);
 
@@ -68,8 +68,12 @@ function mousePressed(){
 
 //end1 all balls out
 function ballsGone(){
-    if(ball.y < 0){
-        state = 'end1';
+    if(ball.y < 0) {
+        ballCounter++;
+        text(ballCounter, width/2, height/2);
+        if(ballCounter = 3){
+            end1();
+        }
     }
 }
 

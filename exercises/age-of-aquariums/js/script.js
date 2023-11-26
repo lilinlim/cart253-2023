@@ -57,7 +57,8 @@ function setup() {
   
   log.x = random(width);
   log.y = random(height);
-  log.vx = log.speed
+  log.vx = log.speed;
+  log.vy = random(-log.speed);
 
   //displayImage = random(images);
 
@@ -186,6 +187,14 @@ function displayLog(){
   //move log
   log.x = log.x + log.vx;
   log.y = log.y + log.vy;
+
+  if(log.x > width || log.x < 0){
+    log.vx *= -1;
+  }
+
+  if(log.y > height || log.y < 0){
+    log.vy*= -1;
+  }
 }
 
 //allows to create fishes if mouse pressed
