@@ -10,6 +10,7 @@ let numBalls = 1;
 let state = 'simulation';
 
 let ballCounter = 0;
+let ballOut = 0;
 
 let d = dist(paddle.x, paddle.y, ball.x, ball.y);
 
@@ -55,6 +56,9 @@ function simulation(){
             ball.bounce(paddle);
             ball.display(); 
         }
+        if(ball.y < 0){
+            end1();
+        }
     }
 
     
@@ -64,17 +68,6 @@ function simulation(){
 //add one
 function mousePressed(){
     balls.push(new Ball(mouseX, mouseY));
-}
-
-//end1 all balls out
-function ballsGone(){
-    if(ball.y < 0) {
-        ballCounter++;
-        text(ballCounter, width/2, height/2);
-        if(ballCounter = 3){
-            end1();
-        }
-    }
 }
 
 
