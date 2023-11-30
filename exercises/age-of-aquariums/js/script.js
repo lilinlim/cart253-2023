@@ -3,6 +3,7 @@
 let school = [];
 let schoolSize = 10;
 
+//beginning state
 let state ='simulation';
 
 //counter for eating
@@ -33,37 +34,29 @@ let images = [];
 let numImages = 6;
 let displayImage;
 
+//preloading for images
 function preload(){
+  //image loading
   userImage = loadImage('assets/images/otter.png');
-
   fishImage = loadImage('assets/images/fish-1.png');
-
   logImage = loadImage('assets/images/log.png');
-  
-  //for(let i = 0; i < numImages; i++) {
-   // let loadedImage = loadedImage('assets/images/fish-${i}.png');
-  //  images.push(loadedImage);
- // }
 }
 
 
 function setup() {
   createCanvas(600, 600);
 
+  //image setup
   let user = userImage;
-
   let fish = fishImage;
 
-  
+  //setting up log
   log.x = random(width);
   log.y = random(height);
   log.vx = log.speed;
   log.vy = random(-log.speed);
 
-  //displayImage = random(images);
-
-  // Create four fish, positioned randomly
-
+  //
   if(state === 'simulation'){
   for(let i = 0; i < schoolSize; i++){
     let fish = createFish(random(0, width), random(0, height));
@@ -97,6 +90,7 @@ function draw() {
     displayFish(school[i]);
   }
 
+  //states
   if(state === 'simulation'){
     simulation();
   }
@@ -109,6 +103,7 @@ function draw() {
 
 }
 
+//simulation funcs
 function simulation(){
   player();
   displayLog();
