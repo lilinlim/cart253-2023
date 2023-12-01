@@ -4,28 +4,31 @@ let gravityForce = 0.0025;
 
 let paddle;
 
+//normal balls
 let balls = [];
 let numBalls = 15;
 
+//soccer balls
 let soccers = [];
 let soccerBalls = 0;
 
+//starting state
 let state = 'simulation';
 
+//counter for each ball type
 let ballCounter = 0;
-
 let soccerCounter = 0;
 
+//distance for each ball type
 let d = dist(paddle.x, paddle.y, ball.x, ball.y);
-
 let dS = dist(paddle.x, paddle.y, soccer.x, soccer.y);
 
 function setup() {
-
     createCanvas(windowWidth, windowHeight);
 
     paddle = new Paddle(300, 30);
 
+    //bounding balls to sim
     if(state === 'simulation'){
         for(let i = 0; i < numBalls; i++){
             let x = random(0, width);
@@ -46,13 +49,15 @@ function setup() {
 
 function draw() {
 
-    background(0);
+    background(173, 216, 230);
 
+    //bounding paddle to sim
     if(state === 'simulation'){
         paddle.move();
         paddle.display();
     }
 
+    //states
     if(state === 'simulation'){
         simulation();
     }
@@ -87,19 +92,18 @@ function simulation(){
             soccer.display(); 
         }
     }
-
     
 }
 
 
-//add one
+//add soccer ball when pressed
 function mousePressed(){
     if(state === 'simulation'){
         soccers.push(new Soccer(mouseX, mouseY));
     }
 }
 
-
+//normal ending
 function end1(){
     push();
     textSize(64);
@@ -109,6 +113,7 @@ function end1(){
     pop();
 }
 
+//special ending
 function end2(){
     push();
     textSize(64);
@@ -117,5 +122,3 @@ function end2(){
     text('u got the special end!', width/2, height/2);
     pop();
 }
-
-//end2 

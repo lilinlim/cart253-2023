@@ -226,6 +226,7 @@ function goodEnd(){
     pop();
 }
 
+//ending if touching log
 function badEnd(){
   push();
   textSize(64);

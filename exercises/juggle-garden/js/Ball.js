@@ -30,6 +30,7 @@ class Ball {
             this.active = false;
         }
 
+        //bounces off the wall
         if(this.x > width || this.x < 0){
             this.vx *= -1;
         }
@@ -60,7 +61,7 @@ class Ball {
     display(){
         push();
         fill(255, 50, 50);
-        stroke(0);
+        noStroke();
         ellipse(this.x, this.y, this.size);
         pop();
     }
