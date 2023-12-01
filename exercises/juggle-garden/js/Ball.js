@@ -29,6 +29,10 @@ class Ball {
         if(this.y - this.size/2 > height){
             this.active = false;
         }
+
+        if(this.x > width || this.x < 0){
+            this.vx *= -1;
+        }
     }
 
     bounce(paddle){
@@ -40,6 +44,9 @@ class Ball {
             ballCounter++;
             fill(255);
             text(ballCounter, width/2, height/2);
+            if(ballCounter == 6){
+                state = 'end1';
+            }
             
             //bounce
             let dx = this.x - paddle.x;

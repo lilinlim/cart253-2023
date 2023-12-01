@@ -1,4 +1,4 @@
-class Ball {
+class Soccer {
 
     constructor(x, y) {
         this.x = x;
@@ -36,6 +36,13 @@ class Ball {
             this.x < paddle.x + paddle.width/2 &&
             this.y + this.size/2 > paddle.y - paddle.height/2 &&
             this.y - this.size/2 < paddle.y + paddle.height/2){
+
+            soccerCounter++;
+            fill(255);
+            text(soccerCounter, width/2, height/2);
+            if(soccerCounter == 4){
+                state = 'end2';
+            }
             
             //bounce
             let dx = this.x - paddle.x;
@@ -48,7 +55,7 @@ class Ball {
 
     display(){
         push();
-        fill(255, 50, 50);
+        fill(255, 255, 153);
         stroke(0);
         ellipse(this.x, this.y, this.size);
         pop();

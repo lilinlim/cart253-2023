@@ -5,14 +5,20 @@ let gravityForce = 0.0025;
 let paddle;
 
 let balls = [];
-let numBalls = 1;
+let numBalls = 15;
+
+let soccers = [];
+let soccerBalls = 0;
 
 let state = 'simulation';
 
 let ballCounter = 0;
-let ballOut = 0;
+
+let soccerCounter = 0;
 
 let d = dist(paddle.x, paddle.y, ball.x, ball.y);
+
+let dS = dist(paddle.x, paddle.y, soccer.x, soccer.y);
 
 function setup() {
 
@@ -20,11 +26,20 @@ function setup() {
 
     paddle = new Paddle(300, 30);
 
-    for(let i = 0; i < numBalls; i++){
-        let x = random(0, width);
-        let y = random(-400, -100);
-        let ball = new Ball(x, y);
-        balls.push(ball);
+    if(state === 'simulation'){
+        for(let i = 0; i < numBalls; i++){
+            let x = random(0, width);
+            let y = random(-400, -100);
+            let ball = new Ball(x, y);
+            balls.push(ball);
+        }
+    
+        for(let i = 0; i < soccerBalls; i++){
+            let x = random(0, width);
+            let y = random(-400, -100);
+            let soccer = new Soccer(x, y);
+            soccers.push(soccer);
+        }
     }
 
 }
@@ -33,14 +48,19 @@ function draw() {
 
     background(0);
 
-    paddle.move();
-    paddle.display();
+    if(state === 'simulation'){
+        paddle.move();
+        paddle.display();
+    }
 
     if(state === 'simulation'){
         simulation();
     }
     else if(state === 'end1'){
         end1();
+    }
+    else if(state === 'end2'){
+        end2();
     }
 
     
@@ -56,8 +76,15 @@ function simulation(){
             ball.bounce(paddle);
             ball.display(); 
         }
-        if(ball.y < 0){
-            end1();
+    }
+
+    for (let i = 0; i < soccers.length; i++) {
+        let soccer = soccers[i];
+        if(soccer.active) {
+            soccer.gravity(gravityForce);
+            soccer.move();
+            soccer.bounce(paddle);
+            soccer.display(); 
         }
     }
 
@@ -67,7 +94,9 @@ function simulation(){
 
 //add one
 function mousePressed(){
-    balls.push(new Ball(mouseX, mouseY));
+    if(state === 'simulation'){
+        soccers.push(new Soccer(mouseX, mouseY));
+    }
 }
 
 
@@ -77,6 +106,15 @@ function end1(){
     fill(200, 100, 100);
     textAlign(CENTER, CENTER);
     text('end', width/2, height/2);
+    pop();
+}
+
+function end2(){
+    push();
+    textSize(64);
+    fill(200, 100, 100);
+    textAlign(CENTER, CENTER);
+    text('u got the special end!', width/2, height/2);
     pop();
 }
 
