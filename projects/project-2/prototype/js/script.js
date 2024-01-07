@@ -16,7 +16,6 @@ var clicks = 0;
 //setting up starting state
 let state = 'title';
 
-//for dialogue
 let dialogue = [
     'r arrow to continue',
     'l arrow key to go back',
