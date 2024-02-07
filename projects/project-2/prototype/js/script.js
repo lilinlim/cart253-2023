@@ -1,17 +1,39 @@
+/*****************
+  project 1
+  elle lilin lim
+
+  you're a cat and must eat your rice lunch before time runs out!
+  make sure to click on the rice to consumme your delicious meal.
+*****************/
+
 "use strict";
 
-let food = {
-    x: 300,
-    y: 300,
-    size: 200,
-    fill: {
-        r: 48,
-        g: 60,
-        b: 110
-    }
-}
+//images
+let tray;
+let utensils;
+let kimchi;
+let gogi;
+let bap;
+let mandu;
+let namul;
+let gyeran;
+let guk;
+let radish;
 
-var clicks = 0;
+
+let shape1;
+let shape2;
+
+let button = {
+  x: 600,
+  y: 150,
+  size: 100,
+  fill: {
+    r: 255,
+    g: 255,
+    b: 217
+}
+}
 
 //setting up starting state
 let state = 'title';
@@ -33,12 +55,28 @@ let currentIndex = 0;
 
 let secondIndex = 0;
 
+function preload(){
+  //images
+  tray = loadImage('assets/images/tray.png');
+  utensils = loadImage('assets/images/utensils.png');
+  kimchi = loadImage('assets/images/kimchi.png');
+  gogi = loadImage('assets/images/gogi.png');
+  bap = loadImage('assets/images/bap.png');
+  mandu = loadImage('assets/images/mandu.png');
+  namul = loadImage('assets/images/namul.png');
+  gyeran = loadImage('assets/images/gyeran.png');
+  guk = loadImage('assets/images/guk.png');
+  radish = loadImage('assets/images/radish.png');
+}
+
 function setup() {
-    createCanvas(600, 600);
+    createCanvas(800, 600);
 
     textAlign(CENTER, CENTER);
     textSize(32);
     fill(0);
+  
+    makeShapesSim();
 }
 
 
@@ -75,9 +113,12 @@ function mousePressed() {
     else if(state === 'stateTest'){
         state = 'talkingAgain';
     }
-    else if(state === 'simulation' && mouseInsideFood()){
-        clicking();
-    }
+    if(state === 'simulation' && mouseLoc()){
+    state = 'end';
+  }
+  
+  handleMousePressed(shape1);
+  handleMousePressed(shape2);
 
     
 }
@@ -133,44 +174,114 @@ function talkingAgain(){
 }
 
 function simulation(){
-    noStroke();
-    ellipse(food.x, food.y, food.size);
+  handleDragging(shape1);
+  handleDragging(shape2);
 
-    if(clicks < 5){
-        fill(food.fill.r, food.fill.g, food.fill.b);
-    }
-    else if(clicks > 10 && clicks < 15){
-        food.fill.r = 103;
-        food.fill.g = 144;
-        food.fill.b = 194;
-        fill(food.fill.r, food.fill.g, food.fill.b);
-    }
-    else if(clicks > 15){
-        food.fill.r = 161;
-        food.fill.g = 218;
-        food.fill.b = 230;
-        fill(food.fill.r, food.fill.g, food.fill.b);
-    }
+  drawShape(shape1);
+  drawShape(shape2);
+  
+  makeButton();
+
+  imageMode(CENTER);
+  image(tray, 400, 300);
+  image(kimchi, 400, 300);
 }
 
-function clicking(){
-    clicks++;
-    if(clicks == 16){
-        state = 'end';
-    }
+function makeShapesSim(){
+  shape1 = createDraggableShape(width/4, height/4, `#CBC3E3`);
+  shape2 = createDraggableShape(width/6, 3 * height/4, `#ADD8E6`);
 }
 
-function mouseInsideFood(){
-    if(state === 'simulation'){
-      let d = dist(mouseX, mouseY, food.x, food.y);
-      if (d < food.size / 2){
-        return true;
-      } else {
-        return false;
-      }
+function createDraggableShape(x, y, color) {
+  let shape = {
+    x: x,
+    y: y,
+    size: 100,
+    isBeingDragged: false,
+    offsetX: 0,
+    offsetY: 0,
+    fill: color,
+  };
+  return shape;
+}
+
+
+function makeButton(){
+  noStroke();
+  fill(button.fill.r, button.fill.g, button.fill.b);
+  ellipse(button.x, button.y, button.size);
+}
+
+function mouseLoc(){
+  if(state === 'simulation'){
+    let d = dist(mouseX, mouseY, button.x, button.y);
+    if (d < button.size / 2){
+      return true;
+    } else {
+      return false;
     }
   }
+}
+
+
+function handleDragging(shape) {
+
+  if (shape.isBeingDragged) {
+    shape.x = mouseX + shape.offsetX;
+    shape.y = mouseY + shape.offsetY;
+
+    shape.x = constrain(shape.x, 0, width);
+    shape.y = constrain(shape.y, 0, height);
+  }
+}
+
+function drawShape(shape) {  
+  push();
+  fill(shape.fill);
+  noStroke();
+  // Draw that shape!
+  ellipse(shape.x, shape.y, shape.size);
+  pop();
+}
+
+function mouseIsInsideShape(shape) {
+  let d = dist(mouseX, mouseY, shape.x, shape.y);
+  if (d < shape.size / 2) {
+    return true;
+  } else {
+    return false;
+  }
+}
+
+function handleMousePressed(shape) {
+  if (mouseIsInsideShape(shape)) {
+    shape.isBeingDragged = true;
+    shape.offsetX = shape.x - mouseX;
+    shape.offsetY = shape.y - mouseY;
+  }
+}
+
+function mouseReleased() {
+  handleMouseReleased(shape1);
+  handleMouseReleased(shape2);
+}
+
+function handleMouseReleased(shape) {
+  if (!shape.isBeingDragged) {
+    return;
+  }
+  
+  {
+    // Reset dragging
+    shape.isBeingDragged = false;
+    // Reset the offset
+    shape.offsetX = 0;
+    shape.offsetY = 0;
+  }
+}
+
 
 function end(){
-    text('end for now', width/2, height/2);
+  fill(0);
+  text('end for now', width/2, height/2);
 }
