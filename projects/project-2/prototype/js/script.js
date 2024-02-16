@@ -2,7 +2,9 @@
   project 2
   elle lilin lim
 
-  drag and drop images to create ur idea lunch plater
+  drag and drop images to create a lunch plater
+  click the screen when theres text+image, 
+  but if not use L/R to move through dialogues
 *****************/
 
 "use strict";
@@ -10,14 +12,16 @@
 //images
 let tray, utensils, bell;
 let kimchi, gogi, bap, mandu, namul, gyeran, guk, radish;
+//extra images added later
 let danmuji, dubu, kimbap, oi, sundae, sunny, tonkatsu, tteok;
+//images cat
+let catTitle, catLine, catEnding;
 
-//CHANGE SHAPE TO FOOD..
-//shapes
-let shape1, shape2, shape3, shape4, shape5, shape6, shape7, shape8, shape9;
-let shape10, shape11, shape12, shape13, shape14, shape15, shape16, shape17;
+//foods
+let food1, food2, food3, food4, food5, food6, food7, food8, food9,
+  food10, food11, food12, food13, food14, food15, food16, food17;
 
-//button
+//button to go from food sim to ending
 let button = {
   x: 720,
   y: 500,
@@ -26,7 +30,7 @@ let button = {
     r: 255,
     g: 255,
     b: 217
-}
+  }
 }
 
 //setting up starting state
@@ -34,26 +38,32 @@ let state = 'title';
 
 //dialogue 1
 let dialogue = [
-    'quick! its lunchtime',
-    'select your desired dishes to eat on your break',
+  'quick! its lunchtime',
+  'you already made sure that everything is ready',
+  'all the lunch options are cooked',
+  'its time to serve them',
 ];
 
 //dialogue 2
 let dialogueAgain = [
-    'when your meal is ready',
-    'click the bell!'
+  'omg! its the office worker you have a crush on',
+  'dont let him fluster you during your work',
+  'when the meal is ready',
+  'click the bell to serve!'
 ]
 
-let currentIndex = 0;
-let secondIndex = 0;
+//setting starting line value
+let currentLine = 0;
+let secondLine = 0;
 
 //preloading images
-function preload(){
-  //images
+function preload() {
+  //images of other things
   tray = loadImage('assets/images/tray.png');
   utensils = loadImage('assets/images/utensils.png');
   bell = loadImage('assets/images/bell.png');
 
+  //food images
   kimchi = loadImage('assets/images/kimchi.png');
   gogi = loadImage('assets/images/gogi.png');
   bap = loadImage('assets/images/bap.png');
@@ -70,206 +80,227 @@ function preload(){
   sunny = loadImage('assets/images/sunny.png');
   tonkatsu = loadImage('assets/images/tonkatsu.png');
   tteok = loadImage('assets/images/tteok.png');
+
+  //cat images
+  catTitle = loadImage('assets/images/cattitle.png');
+  catLine = loadImage('assets/images/catline.png');
+  catEnding = loadImage('assets/images/catending.png');
 }
 
 
 function setup() {
-    createCanvas(800, 600);
+  createCanvas(800, 600);
 
-    //basic text traits
-    textAlign(CENTER, CENTER);
-    textSize(32);
-    fill(0);
-  
-    makeFood();
+  //basic text traits
+  textAlign(CENTER, CENTER);
+  textSize(32);
+  stroke(255);
+  strokeWeight(1);
+  fill(0);
+
+  //creating foods
+  makeFood();
 }
 
 
 function draw() {
-    background(255, 192, 203);
-    
-    //text(dialogue[currentIndex], width/2, height/2);
+  background(255, 192, 203);
 
-    //states + function link
-    if(state === 'title'){
-        title();
-    }
-    else if(state === 'talking'){
-        talking();
-    }
-    else if(state === 'stateTest'){
-        stateTest();
-    }
-    else if(state === 'talkingAgain'){
-        talkingAgain();
-    }
-    else if(state === 'simulation'){
-        simulation();
-    }
-    else if(state === 'end'){
-        end();
-    }
+  //associating each state to its designed function
+  if (state === 'title') {
+    title();
+  }
+  else if (state === 'talking') {
+    talking();
+  }
+  else if (state === 'catInLineState') {
+    catInLineState();
+  }
+  else if (state === 'talkingAgain') {
+    talkingAgain();
+  }
+  else if (state === 'simulation') {
+    simulation();
+  }
+  else if (state === 'end') {
+    end();
+  }
 }
 
 function mousePressed() {
-
-  //states 
-    if(state === 'title'){
-        state = 'talking';
-    }
-    else if(state === 'stateTest'){
-        state = 'talkingAgain';
-    }
-    if(state === 'simulation' && mouseLoc()){
+  //states logic 
+  if (state === 'title') {
+    state = 'talking';
+  }
+  else if (state === 'catInLineState') {
+    state = 'talkingAgain';
+  }
+  if (state === 'simulation' && mouseLoc()) {
     state = 'end';
   }
-  
-  handleMousePressed(shape1);
-  handleMousePressed(shape2);
-  handleMousePressed(shape3);
-  handleMousePressed(shape4);
-  handleMousePressed(shape5);
-  handleMousePressed(shape6);
-  handleMousePressed(shape7);
-  handleMousePressed(shape8);
-  handleMousePressed(shape9);
 
-  handleMousePressed(shape10);
-  handleMousePressed(shape11);
-  handleMousePressed(shape12);
-  handleMousePressed(shape13);
-  handleMousePressed(shape14);
-  handleMousePressed(shape15);
-  handleMousePressed(shape16);
-  handleMousePressed(shape17);
-    
+  //calls mouse press for each food
+  handleMousePressed(food1);
+  handleMousePressed(food2);
+  handleMousePressed(food3);
+  handleMousePressed(food4);
+  handleMousePressed(food5);
+  handleMousePressed(food6);
+  handleMousePressed(food7);
+  handleMousePressed(food8);
+  handleMousePressed(food9);
+  handleMousePressed(food10);
+  handleMousePressed(food11);
+  handleMousePressed(food12);
+  handleMousePressed(food13);
+  handleMousePressed(food14);
+  handleMousePressed(food15);
+  handleMousePressed(food16);
+  handleMousePressed(food17);
 }
 
 function keyPressed() {
-    if(keyCode === LEFT_ARROW && state === 'talking'){
-        currentIndex = currentIndex - 1;
+  //conditions to go previous dialog
+  if (keyCode === LEFT_ARROW && state === 'talking') {
+    //going back
+    currentLine = currentLine - 1;
 
-        if(currentIndex === -1){
-            currentIndex = 0;
-        }
-
-    } else if (keyCode === RIGHT_ARROW && state === 'talking'){
-        currentIndex = currentIndex + 1;
-
-        if(currentIndex === dialogue.length){
-            currentIndex = dialogue.length - 1;
-            state = 'stateTest';
-        }
+    //not allowing to go past what we have
+    if (currentLine === -1) {
+      currentLine = 0;
     }
 
-    if(keyCode === LEFT_ARROW && state === 'talkingAgain'){
-        secondIndex = secondIndex - 1;
+  //conditions to go next dialog
+  } else if (keyCode === RIGHT_ARROW && state === 'talking') {
+    //going next
+    currentLine = currentLine + 1;
 
-        if(secondIndex === -1){
-            secondIndex = 0;
-        }
-
-    } else if (keyCode === RIGHT_ARROW && state === 'talkingAgain'){
-        secondIndex = secondIndex + 1;
-
-        if(secondIndex === dialogueAgain.length){
-            secondIndex = dialogueAgain.length - 1;
-            state = 'simulation';
-        }
+    //condition to move onto next part
+    if (currentLine === dialogue.length) {
+      currentLine = dialogue.length - 1;
+      state = 'catInLineState';
     }
+  }
+
+  //same code but modified for dialog 2
+  if (keyCode === LEFT_ARROW && state === 'talkingAgain') {
+    secondLine = secondLine - 1;
+
+    if (secondLine === -1) {
+      secondLine = 0;
+    }
+
+  } else if (keyCode === RIGHT_ARROW && state === 'talkingAgain') {
+    secondLine = secondLine + 1;
+
+    if (secondLine === dialogueAgain.length) {
+      secondLine = dialogueAgain.length - 1;
+      state = 'simulation';
+    }
+  }
 }
 
-function title(){
-    text('lunch rush', width/2, height/2);
+//title screen
+function title() {
+  imageMode(CENTER);
+  image(catTitle, 450, 350);
+  text('lunch crush', width / 2, 530);
 }
 
-function talking(){
-    text(dialogue[currentIndex], width/2, height/2);
+//dialogue 1
+function talking() {
+  //displaying dialogue
+  text(dialogue[currentLine], width / 2, height / 2);
 }
 
-function stateTest(){
-    text('insert image', width/2, height/2);
+//scene
+function catInLineState() {
+  imageMode(CENTER);
+  image(catLine, 400, 300);
+  text('the lines are getting busy fast', width / 2, 530);
 }
 
-function talkingAgain(){
-    text(dialogueAgain[secondIndex], width/2, height/2);
+//second dialogue
+function talkingAgain() {
+  text(dialogueAgain[secondLine], width / 2, height / 2);
 }
 
-function simulation(){
+function simulation() {
 
-  handleDragging(shape1);
-  handleDragging(shape2);
-  handleDragging(shape3);
-  handleDragging(shape4);
-  handleDragging(shape5);
-  handleDragging(shape6);
-  handleDragging(shape7);
-  handleDragging(shape8);
-  handleDragging(shape9);
+  handleDragging(food1);
+  handleDragging(food2);
+  handleDragging(food3);
+  handleDragging(food4);
+  handleDragging(food5);
+  handleDragging(food6);
+  handleDragging(food7);
+  handleDragging(food8);
+  handleDragging(food9);
+  handleDragging(food10);
+  handleDragging(food11);
+  handleDragging(food12);
+  handleDragging(food13);
+  handleDragging(food14);
+  handleDragging(food15);
+  handleDragging(food16);
+  handleDragging(food17);
 
-  handleDragging(shape10);
-  handleDragging(shape11);
-  handleDragging(shape12);
-  handleDragging(shape13);
-  handleDragging(shape14);
-  handleDragging(shape15);
-  handleDragging(shape16);
-  handleDragging(shape17);
-  
+  //button creation
   makeButton();
 
+  //food to image
   imageAssociation();
 }
 
-//images linked to each shape
-function imageAssociation(){
+//images linked to each food
+function imageAssociation() {
   imageMode(CENTER);
 
+  //images linking to each shape's location + size
   image(tray, 400, 300);
-
-  image(kimchi, shape1.x, shape1.y, 80, 80);
-  image(bap, shape3.x, shape3.y, 120, 120);
-  image(gogi, shape2.x, shape2.y, 100, 100);
-  image(mandu, shape4.x, shape4.y, 100, 100);
-  image(namul, shape5.x, shape5.y, 100, 100);
-  image(gyeran, shape6.x, shape6.y, 100, 100);
-  image(guk, shape7.x, shape7.y, 150, 150);
-  image(radish, shape8.x, shape8.y, 100, 100);
-  image(utensils, shape9.x, shape9.y, 100, 250);
-
-  image(danmuji, shape10.x, shape10.y, 70, 70);
-  image(dubu, shape11.x, shape11.y, 100, 100);
-  image(kimbap, shape12.x, shape12.y, 120, 120);
-  image(oi, shape13.x, shape13.y, 90, 90);
-  image(sundae, shape14.x, shape14.y, 100, 100);
-  image(sunny, shape15.x, shape15.y, 100, 100);
-  image(tonkatsu, shape16.x, shape16.y, 150, 150);
-  image(tteok, shape17.x, shape17.y, 150, 150);
+  image(kimchi, food1.x, food1.y, 80, 80);
+  image(bap, food3.x, food3.y, 120, 120);
+  image(gogi, food2.x, food2.y, 100, 100);
+  image(mandu, food4.x, food4.y, 100, 100);
+  image(namul, food5.x, food5.y, 100, 100);
+  image(gyeran, food6.x, food6.y, 100, 100);
+  image(guk, food7.x, food7.y, 150, 150);
+  image(radish, food8.x, food8.y, 100, 100);
+  image(utensils, food9.x, food9.y, 100, 250);
+  image(danmuji, food10.x, food10.y, 70, 70);
+  image(dubu, food11.x, food11.y, 100, 100);
+  image(kimbap, food12.x, food12.y, 120, 120);
+  image(oi, food13.x, food13.y, 90, 90);
+  image(sundae, food14.x, food14.y, 100, 100);
+  image(sunny, food15.x, food15.y, 100, 100);
+  image(tonkatsu, food16.x, food16.y, 150, 150);
+  image(tteok, food17.x, food17.y, 150, 150);
 }
 
-function makeFood(){
-  shape1 = createDraggableShape(100, 200, `#CBC3E3`);
-  shape2 = createDraggableShape(100, 300, `#ADD8E6`);
-  shape3 = createDraggableShape(100, 100, `#ADD8E6`);
-  shape4 = createDraggableShape(100, 500, `#ADD8E6`);
-  shape5 = createDraggableShape(200, 100, `#ADD8E6`);
-  shape6 = createDraggableShape(300, 100, `#ADD8E6`);
-  shape7 = createDraggableShape(250, 520, `#ADD8E6`);
-  shape8 = createDraggableShape(600, 100, `#ADD8E6`);
-  shape9 = createDraggableShape(600, 400, `#ADD8E6`);
-
-  shape10 = createDraggableShape(100, 400, `#ADD8E6`);
-  shape11 = createDraggableShape(500, 100, `#ADD8E6`);
-  shape12 = createDraggableShape(700, 200, `#ADD8E6`);
-  shape13 = createDraggableShape(400, 100, `#ADD8E6`);
-  shape14 = createDraggableShape(700, 300, `#ADD8E6`);
-  shape15 = createDraggableShape(700, 100, `#ADD8E6`);
-  shape16 = createDraggableShape(410, 520, `#ADD8E6`);
-  shape17 = createDraggableShape(560, 520, `#ADD8E6`);
+//creating each food item + making sure its draggable and locations
+function makeFood() {
+  food1 = createDraggablefood(100, 200, `#CBC3E3`);
+  food2 = createDraggablefood(100, 300, `#ADD8E6`);
+  food3 = createDraggablefood(100, 100, `#ADD8E6`);
+  food4 = createDraggablefood(100, 500, `#ADD8E6`);
+  food5 = createDraggablefood(200, 100, `#ADD8E6`);
+  food6 = createDraggablefood(300, 100, `#ADD8E6`);
+  food7 = createDraggablefood(250, 520, `#ADD8E6`);
+  food8 = createDraggablefood(600, 100, `#ADD8E6`);
+  food9 = createDraggablefood(600, 400, `#ADD8E6`);
+  food10 = createDraggablefood(100, 400, `#ADD8E6`);
+  food11 = createDraggablefood(500, 100, `#ADD8E6`);
+  food12 = createDraggablefood(700, 200, `#ADD8E6`);
+  food13 = createDraggablefood(400, 100, `#ADD8E6`);
+  food14 = createDraggablefood(700, 300, `#ADD8E6`);
+  food15 = createDraggablefood(700, 100, `#ADD8E6`);
+  food16 = createDraggablefood(410, 520, `#ADD8E6`);
+  food17 = createDraggablefood(560, 520, `#ADD8E6`);
 }
 
-function createDraggableShape(x, y, color) {
-  let shape = {
+//creating food hitbox
+function createDraggablefood(x, y, color) {
+  let food = {
     x: x,
     y: y,
     size: 100,
@@ -278,19 +309,22 @@ function createDraggableShape(x, y, color) {
     offsetY: 0,
     fill: color,
   };
-  return shape;
+  return food;
 }
 
 //button visuals
-function makeButton(){
-  //noStroke();
-  image(bell, button.x, button.y, 100 ,100);
+function makeButton() {
+  image(bell, button.x, button.y, 100, 100);
 }
 
-function mouseLoc(){
-  if(state === 'simulation'){
+//clickable button
+function mouseLoc() {
+  //bounding it to a state
+  if (state === 'simulation') {
+    //using the dist method to location mouse to button
     let d = dist(mouseX, mouseY, button.x, button.y);
-    if (d < button.size / 2){
+    //if its pressed + in button, button works
+    if (d < button.size / 2) {
       return true;
     } else {
       return false;
@@ -298,72 +332,80 @@ function mouseLoc(){
   }
 }
 
+//moving of food
+function handleDragging(food) {
+  if (food.isBeingDragged) {
+    //new positions w/ offset in mind
+    food.x = mouseX + food.offsetX;
+    food.y = mouseY + food.offsetY;
 
-function handleDragging(shape) {
-
-  if (shape.isBeingDragged) {
-    shape.x = mouseX + shape.offsetX;
-    shape.y = mouseY + shape.offsetY;
-
-    shape.x = constrain(shape.x, 0, width);
-    shape.y = constrain(shape.y, 0, height);
+    //limiting food to in canvas
+    food.x = constrain(food.x, 0, width);
+    food.y = constrain(food.y, 0, height);
   }
 }
 
-function mouseIsInsideShape(shape) {
-  let d = dist(mouseX, mouseY, shape.x, shape.y);
-  if (d < shape.size / 2) {
+//makes sure mouse is inside of food
+function mouseIsInsidefood(food) {
+  //dist method
+  let d = dist(mouseX, mouseY, food.x, food.y);
+  //if mouse is inside food then food can be dragged
+  if (d < food.size / 2) {
     return true;
   } else {
     return false;
   }
 }
 
-function handleMousePressed(shape) {
-  if (mouseIsInsideShape(shape)) {
-    shape.isBeingDragged = true;
-    shape.offsetX = shape.x - mouseX;
-    shape.offsetY = shape.y - mouseY;
+//food is being clicked to start dragging
+function handleMousePressed(food) {
+  if (mouseIsInsidefood(food)) {
+    //letting food be dragged
+    food.isBeingDragged = true;
+    //offsetting food
+    food.offsetX = food.x - mouseX;
+    food.offsetY = food.y - mouseY;
   }
 }
 
+//mouse released for all food
 function mouseReleased() {
-  handleMouseReleased(shape1);
-  handleMouseReleased(shape2);
-  handleMouseReleased(shape3);
-  handleMouseReleased(shape4);
-  handleMouseReleased(shape5);
-  handleMouseReleased(shape6);
-  handleMouseReleased(shape7);
-  handleMouseReleased(shape8);
-  handleMouseReleased(shape9);
-
-  handleMouseReleased(shape10);
-  handleMouseReleased(shape11);
-  handleMouseReleased(shape12);
-  handleMouseReleased(shape13);
-  handleMouseReleased(shape14);
-  handleMouseReleased(shape15);
-  handleMouseReleased(shape16);
-  handleMouseReleased(shape17);
+  handleMouseReleased(food1);
+  handleMouseReleased(food2);
+  handleMouseReleased(food3);
+  handleMouseReleased(food4);
+  handleMouseReleased(food5);
+  handleMouseReleased(food6);
+  handleMouseReleased(food7);
+  handleMouseReleased(food8);
+  handleMouseReleased(food9);
+  handleMouseReleased(food10);
+  handleMouseReleased(food11);
+  handleMouseReleased(food12);
+  handleMouseReleased(food13);
+  handleMouseReleased(food14);
+  handleMouseReleased(food15);
+  handleMouseReleased(food16);
+  handleMouseReleased(food17);
 }
 
-function handleMouseReleased(shape) {
-  if (!shape.isBeingDragged) {
+function handleMouseReleased(food) {
+  //makes sure its being dragged
+  if (!food.isBeingDragged) {
     return;
   }
-  
+
   {
-    // Reset dragging
-    shape.isBeingDragged = false;
-    // Reset the offset
-    shape.offsetX = 0;
-    shape.offsetY = 0;
+    //resetting parameters once not dragged
+    food.isBeingDragged = false;
+    food.offsetX = 0;
+    food.offsetY = 0;
   }
 }
 
-//ending text
-function end(){
-  fill(0);
-  text('end for now', width/2, height/2);
+//ending scene
+function end() {
+  imageMode(CENTER);
+  image(catEnding, 450, 350);
+  text('he enjoyed the meal!', width / 2, 530);
 }
